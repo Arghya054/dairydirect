@@ -15,7 +15,7 @@ import {
   Legend,
 } from "chart.js";
 
-import { Bar, Doughnut, Line } from "react-chartjs-2";
+//import { Bar, Doughnut, Line } from "react-chartjs-2";
 
 ChartJS.register(
   CategoryScale,
@@ -32,9 +32,9 @@ ChartJS.register(
 const API_BASE = "https://dairydirect-1.onrender.com";
 
 function AdminDashboard() {
-  const [customers, setCustomers] = useState([]);
+  //const [customers, setCustomers] = useState([]);
   const [deliveryData, setDeliveryData] = useState(null);
-  const [customerSummary, setCustomerSummary] = useState([]);
+  //const [customerSummary, setCustomerSummary] = useState([]);
 
   const token = localStorage.getItem("token");
   const navigate = useNavigate();
@@ -100,6 +100,7 @@ function AdminDashboard() {
     fetchCustomers();
     fetchTodayDelivery();
     fetchCustomerSummary();
+    // eslint-disable-next-line
   }, []);
 
   return (

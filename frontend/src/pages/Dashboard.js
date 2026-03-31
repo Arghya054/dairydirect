@@ -9,7 +9,7 @@ const API_BASE = "https://dairydirect-1.onrender.com";
 function Dashboard() {
   const [user, setUser] = useState(null);
   const [monthlyBill, setMonthlyBill] = useState(null);
-  const [monthlyDues, setMonthlyDues] = useState(0);
+  //const [monthlyDues, setMonthlyDues] = useState(0);
   const [history, setHistory] = useState([]);
 
   const token = localStorage.getItem("token");
@@ -28,12 +28,12 @@ function Dashboard() {
     try {
       const profile = await axios.get(`${API_BASE}/api/user/profile`, { headers });
       const bill = await axios.get(`${API_BASE}/api/daily-log/monthly-bill`, { headers });
-      const dues = await axios.get(`${API_BASE}/api/daily-log/monthly-dues`, { headers });
+      //const dues = await axios.get(`${API_BASE}/api/daily-log/monthly-dues`, { headers });
       const historyRes = await axios.get(`${API_BASE}/api/daily-log/my-history`, { headers });
 
       setUser(profile.data);
       setMonthlyBill(bill.data);
-      setMonthlyDues(dues.data.totalDues);
+      //setMonthlyDues(dues.data.totalDues);
       setHistory(historyRes.data);
     } catch {
       alert("Error loading dashboard");
@@ -42,6 +42,7 @@ function Dashboard() {
 
   useEffect(() => {
     fetchAll();
+    // eslint-disable-next-line
   }, []);
 
   return (
