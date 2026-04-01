@@ -1,5 +1,5 @@
 import express from "express";
-import authMiddleware from "../middlewares/authMiddleware.js";
+import { authMiddleware } from "../middlewares/authMiddleware.js";
 import User from "../models/user.model.js";
 import Subscription from "../models/subscription.model.js";
 

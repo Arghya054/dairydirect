@@ -5,6 +5,14 @@ import { authMiddleware, adminOnly } from "../middlewares/authMiddleware.js";
 
 const router = express.Router();
 
+const getLocalDateString = () => {
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = String(now.getMonth() + 1).padStart(2, "0");
+  const day = String(now.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+};
+
 router.get("/customers", authMiddleware, adminOnly, async (req, res) => {
   try {
     const customers = await User.find({ role: "customer" }).select("-password");
@@ -16,9 +24,9 @@ router.get("/customers", authMiddleware, adminOnly, async (req, res) => {
 
 router.get("/today-delivery", authMiddleware, adminOnly, async (req, res) => {
   try {
-    const today = new Date().toISOString().split("T")[0];
+    const today = getLocalDateString();
 
-    const logs = await DailyLog.find({ date: today }).populate(
+    const todayLogs = await DailyLog.find({ date: today }).populate(
       "customerId",
       "name phone address skippedDates dailyLiters pricePerLiter"
     );
@@ -32,15 +40,17 @@ router.get("/today-delivery", authMiddleware, adminOnly, async (req, res) => {
         customer.skippedDates && customer.skippedDates.includes(today)
     );
 
-    const totalLiters = logs.reduce((sum, log) => sum + log.litersDelivered, 0);
-    const totalAmount = logs.reduce((sum, log) => sum + log.totalAmount, 0);
+    const allLogs = await DailyLog.find();
+
+    const totalLiters = allLogs.reduce((sum, log) => sum + log.litersDelivered, 0);
+    const totalAmount = allLogs.reduce((sum, log) => sum + log.totalAmount, 0);
 
     res.json({
       date: today,
-      totalCustomers: logs.length,
+      totalCustomers: allCustomers.length,
       totalLiters,
       totalAmount,
-      deliveries: logs,
+      deliveries: todayLogs,
       skippedCustomers,
     });
   } catch (error) {
